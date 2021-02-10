@@ -2,40 +2,55 @@
 
 // React;
 // ReactDOM;
+class Counter extends React.Component {
+  constructor(props) {
+    // пропсы только для чтения
+    super(props);
+    this.state = {
+      counter: 0,
+    };
+    // this.decrement = this.decrement.bind(this); // 1 var
+    // this.increment = this.increment.bind(this);
+    // 2 var => use arrow functions in increment & decrement methods
+  }
+  increment = () =>
+    this.setState(
+      { counter: this.state.counter + 1 }
+      // ++this.state.counter; // мутация состояния - very bad
+    );
+  decrement = () => {
+    const { counter } = this.state;
+    if (counter > 0) {
+      this.setState({
+        counter: counter - 1,
+      });
+    }
+  };
 
-class Heading extends React.Component {
-  // описали шаблон для интерфейса
   render() {
-    const { titleForHeading, classNameForHeading, children } = this.props;
+    const { counter } = this.state;
     return React.createElement(
-      'h1',
-      { title: titleForHeading, className: classNameForHeading },
-      'Hello React',
-      ...children
+      React.Fragment,
+      null,
+      React.createElement('h1', null, counter),
+      React.createElement(
+        'button',
+        {
+          onClick: this.increment,
+        },
+        '+'
+      ),
+      React.createElement(
+        'button',
+        {
+          onClick: this.decrement,
+        },
+        '-'
+      )
     );
   }
 }
 
-const reactElement1 = React.createElement(
-  Heading,
-  {
-    titleForHeading: 'Element1',
-    classNameForHeading: 'heading',
-  },
-  'str1',
-  'str2',
-  'str3',
-  'str4'
-); // об-т реакт комп-та
+const reactElement = React.createElement(Counter);
 
-const reactElement2 = React.createElement(
-  Heading,
-  {
-    titleForHeading: 'Element2',
-    classNameForHeading: 'test-heading',
-  },
-  'test1',
-  'test2'
-);
-
-ReactDOM.render(reactElement1, document.getElementById('root'));
+ReactDOM.render(reactElement, document.getElementById('root'));
